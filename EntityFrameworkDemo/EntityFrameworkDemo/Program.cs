@@ -87,39 +87,37 @@ namespace EntityFrameworkDemo
                 Console.WriteLine($"{item.Name} has {item.Size} bytes.");
             }
 
-
-
-
-
+            Console.WriteLine("==================================================");
             Console.WriteLine("==================================================");
 
-            var cities = customersList.Select(c => c.City);                             // list cities
-
-            cities.ToList().ForEach( c => Console.Write(c + " ") );
-
-            Console.WriteLine("\n==================================================");
-
-            var customerCityList = customersList.Where(c => c.City.Equals("New York")); // list new yorkers
-            foreach(var item in customerCityList)
-            {
-                Console.WriteLine($"{item.LastName}, {item.FirstName} - {item.City}");
-            }
-
-
-            /*
-            int[] numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            var res = from i in numbers // System.Linq
-                      where i % 2 == 0
-                      select i;
+            // list cities
+            var cities = customersList.Select(c => c.City).Distinct().ToList();                            
             
-            var res = numbers.Where(i => i % 2 == 0).Select(i => i); // lambda
+            List<string> citiesList = cities.ToList();
+            cities.Sort();
 
-            foreach (var item in res)
+            string joined = string.Join(", ", cities.ToArray());
+
+            Console.WriteLine("Here is the city list: \n\n" + joined +
+                                "\n\nPlease enter a city: ");
+
+            var cityEntry = Console.ReadLine();
+
+            var customerCityList = customersList.Where(c => c.City.Equals(cityEntry));
+
+            if(customerCityList.Count() != 1)
+                Console.WriteLine($"\nThere are {customerCityList.Count()} customers in {cityEntry}: \n");
+            else
+                Console.WriteLine($"There is {customerCityList.Count()} customer in {cityEntry}: \n");
+
+            foreach (var item in customerCityList)
             {
-                Console.Write(item + " ");
+                Console.WriteLine($"{item.FirstName} {item.LastName}");
             }
-            */
+
+
+            Console.WriteLine("\nThank you and have a great day!");
+            Console.WriteLine("==================================================");
 
         }
         public class SerializedFile : IComparable<SerializedFile>
